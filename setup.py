@@ -8,5 +8,5 @@ setup(
     description="doing this and that",
     license="BSD",
     packages=['applicake' , 'appliapps'],
-    install_requires=["Unimod"]
+    install_requires=["Unimod", "configobj"]
 )
