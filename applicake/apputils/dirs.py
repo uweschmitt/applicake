@@ -24,7 +24,7 @@ def create_workdir(log, info):
     wd = ''
     for key in [Keys.BASEDIR, Keys.JOB_ID]:
         if key in info:
-            wd += info[key] + os.path.sep
+            wd += str(info[key]) + os.path.sep
 
     if info.get(Keys.SUBJOBLIST, "") != "":
         if not isinstance(info[Keys.SUBJOBLIST], list):
