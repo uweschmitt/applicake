@@ -123,8 +123,6 @@ class Copy2SwathDropbox(BasicApp):
         except:
             log.warn("SWATH report command [%s] failed, skipping" % reportcmd)
 
-
-
         dropbox.move_stage_to_dropbox(log, stagebox, info['DROPBOX'], keepCopy=False)
 
         return info

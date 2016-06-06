@@ -12,7 +12,10 @@ class Dss(WrappedApp):
     The DSS is often a initial workflow node. Requesting a workdir has thus the nice side effect
     that the DSS generates the JOB_ID for the workflow
     """
-    ALLOWED_PREFIXES = ['getdataset', 'getmsdata', 'getexperiment']
+
+    default_keys = {'getmsdata': 'MZXML', 'getexperiment': 'SEARCH', 'getdataset': 'DSSOUT'}
+
+    ALLOWED_PREFIXES = default_keys.keys()
     TRUES = ['TRUE', 'T', 'YES', 'Y', '1']
 
     def add_args(self):
@@ -31,6 +34,9 @@ class Dss(WrappedApp):
         executable = info[Keys.EXECUTABLE]
         if not executable in self.ALLOWED_PREFIXES:
             raise Exception("Executable %s must be one of [%s]" % (executable, self.ALLOWED_PREFIXES))
+
+
+        log.info("info = %r" % info)
 
         self.rfile = os.path.join(info[Keys.WORKDIR], executable + ".out")
 
@@ -53,11 +59,27 @@ class Dss(WrappedApp):
         if "TypeError: expected str or unicode but got <type 'NoneType'>" in out:
             raise RuntimeError("Dataset is archived. Please unarchive first!")
 
+        if "traceback" in out.lower():
+            raise RuntimeError("traceback when talking to openbis: %s" % out)
+
         validation.check_exitcode(log, exit_code)
+        missing = []
+        for line in open(self.rfile):
+            fields = line.strip().rsplit(None, 1)
+            if len(fields) == 2:
+                path = fields[1]
+                if not os.path.exists(path):
+                    missing.append(path)
+
+        executable = info[Keys.EXECUTABLE]
+        if missing:
+            for p in missing:
+                log.error("%s failed for %" % (executable, p))
+            raise Exception("files which should be extracted from openbis are missing")
+
 
         #KEY where to store downloaded file paths
-        default_keys = {'getmsdata': 'MZXML', 'getexperiment': 'SEARCH', 'getdataset': 'DSSOUT'}
-        key = default_keys[info[Keys.EXECUTABLE]]
+        key = self.default_keys[executable]
         #VALUE is a list of files or the mzXMLlink
         dsfls = []
         with open(self.rfile) as f:
