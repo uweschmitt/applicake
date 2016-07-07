@@ -25,7 +25,7 @@ class DiaUmpire(WrappedApp):
         if not isinstance(info['DSSOUT'], list):
             info['DSSOUT'] = [info['DSSOUT']]
         for written_file in info['DSSOUT']:
-            log.info("check for mzxml extension: %s " % written_file)
+            log.info("check for mzXML(.gz) extension: %s " % written_file)
             if written_file.endswith('/ms-injection.properties'):
                 interesting = [line for line in open(written_file, "r") if "SAMPLE_CODE" in line]
                 if not interesting:
@@ -40,7 +40,7 @@ class DiaUmpire(WrappedApp):
                 info["SAMPLE"] = sample_code
                 log.info("SAMPLE is %s" % sample_code)
 
-            if '.mzXML' in written_file:
+            if '.mzXML' in written_file or '.mzXML.gz' in written_file:
                 info[Keys.MZXML] = written_file
                 log.info("MZXML is %s" % written_file)
                 break
@@ -55,6 +55,9 @@ class DiaUmpire(WrappedApp):
 
         working_dir = info[Keys.WORKDIR]
 
+        if "TMPDIR" in info:
+            tempfile.tempdir = info["TMPDIR"]
+        tmpdir = tempfile.mkdtemp()
         tmpdir = tempfile.mkdtemp()
         tmpmzxml = os.path.join(tmpdir, os.path.basename(info['MZXML']))
 

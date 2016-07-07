@@ -1,8 +1,9 @@
+import getpass
 import os
 import subprocess
 import sys
 import time
-import getpass
+import traceback
 
 from applicake.apputils import dirs
 from applicake.apputils import dicts
@@ -64,6 +65,7 @@ class IApp(object):
 class BasicApp(IApp):
     @classmethod
     def main(cls):
+        print("this is", os.path.abspath(__file__))
         log = None
         try:
             start = time.time()
@@ -88,7 +90,11 @@ class BasicApp(IApp):
                         controlfile, msg, getpass.getuser()), shell=True)
             # if app fails before logger is created use sys.exit for message
             if not log:
+                print(msg)
+                traceback.print_exc(e)
                 sys.exit(msg)
+
+            log.error(traceback.format_exc(e))
             log.error(msg)
             sys.exit(1)
 

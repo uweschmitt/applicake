@@ -19,7 +19,7 @@ def setup():
         subprocess.call("rm *ini* *.log", shell=True)
         with open("input.ini", 'w') as f:
             f.write("""
-DATASET_CODE = 20151221172246046-1129816, 20151221172246046-1129816
+DATASET_CODE = 20160621171644022-1186512
 PARAMETERSETFILE =
 
 WORKFLOW = DIA_UMPIRE_WITH_MERGE
