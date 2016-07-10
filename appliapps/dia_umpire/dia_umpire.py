@@ -43,7 +43,7 @@ class DiaUmpire(WrappedApp):
             if '.mzXML' in written_file or '.mzXML.gz' in written_file:
                 info[Keys.MZXML] = written_file
                 log.info("MZXML is %s" % written_file)
-                break
+        assert "SAMPLE" in info, "failed to parse sample code from %s" % (info["DSSOUT"],)
         return info
 
     def prepare_run(self, log, info):
@@ -66,7 +66,15 @@ class DiaUmpire(WrappedApp):
         command_1 = 'dia-umpire.sh "%s" %s' % (tmpmzxml, parameters)
         commands = [command_0, command_1]
 
-        mzxml_stem = os.path.splitext(info["MZXML"])[0]
+
+        mzxml = info["MZXML"]
+        if mzxml.endswith(".gz"):
+            mzxml = mzxml[:-3]
+
+        assert mzxml.endswith(".mzXML"), "%s does not end with .mzXML" % (mzxml,)
+
+        mzxml_stem = mzxml[:-6]
+        # mzxml_stem = os.path.splitext(mzxml)[0]
         info["Q_FILES"] = []
         for i in (1, 2, 3):
             expected = mzxml_stem + "_Q%d.mzXML.gz" % i
