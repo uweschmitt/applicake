@@ -33,6 +33,7 @@ pushd $DATAFOLDER
 # run dia umpire
 INPUTFILE=$(basename $1)
 
+ls -lh
 
 if [ ${INPUTFILE: -9} != ".mzXML.gz" ]; then
     if [ ${INPUTFILE: -6} != ".mzXML" ]; then
@@ -48,8 +49,11 @@ then
     INPUTFILE=${INPUTFILE%.gz}
 fi
 
+ls -lh
 
 java -Xmx24G -jar $DIA_JAR $INPUTFILE $PARAMETER_FILE
+
+ls -lh
 
 # convert mgf to mzXML files
 for MGF in *.mgf; do
@@ -69,6 +73,8 @@ for U in ${STEM}_Q?.mzXML; do
     gzip -n -f $U
     md5sum $U.gz > $U.gz.md5
 done
+
+ls -lh
 
 # undo cd to folder with data files
 popd
