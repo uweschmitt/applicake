@@ -94,6 +94,11 @@ class DiaUmpire(WrappedApp):
         return info, command
 
     def validate_run(self, log, info, exit_code, stdout):
+        if "ERROR [root] Parsing </precursorMz> failed. scan number" in stdout:
+            raise ValueError("the chosen mzXML %s file contains "
+                    "MS2 spectra without precursor information" % info.get("MZXML")
+                    )
+
         validation.check_stdout(log, stdout)
         validation.check_exitcode(log, exit_code)
         info["MD5_SUMS"] = []
