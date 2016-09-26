@@ -29,12 +29,15 @@ class Split(BasicApp):
         if info.get(Keys.SUBJOBLIST, "") == "":
             info[Keys.SUBJOBLIST] = []
 
+        log.debug("value=%r" % value)
         for i, val in enumerate(value):
+            log.debug("i=%d val=%s" % (i, val))
             infocopy = copy.deepcopy(info)
             infocopy[key] = val
             infocopy[Keys.SUBJOBLIST].append("%s%s%d%s%d" % (key, Keys.SUBJOBSEP, i, Keys.SUBJOBSEP, len(value)))
             path = basename + "_" + str(i)
-            log.debug("Writing split file " + path)
+            log.debug("Writing to split file " + path)
+            log.debug("write %r" % infocopy)
             get_handler(basename).write(infocopy, path)
 
         return info

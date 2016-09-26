@@ -80,7 +80,7 @@ class FeatureAlignment(WrappedApp):
 
     def validate_run(self, log, info, exit_code, stdout):
         if 'max_rt_diff = self._stdev_max_rt_per_run * tr_data.getStdev(source, target)' in stdout:
-            raise RuntimeError("No peptides found which are shared between all runs. Try to increase FDR.")
+            raise RuntimeError("No peptides found which are shared between all runs. Try to increase 'alignment_score'.")
         validation.check_stdout(log, stdout)
         validation.check_exitcode(log, exit_code)
         validation.check_file(log, info['ALIGNMENT_TSV'])

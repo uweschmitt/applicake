@@ -1,4 +1,7 @@
 *.py[cod]
 .idea/
 applicake.egg-info/
-*.egg-info/
+*.egg-info/.*.swp
+*/.*.sw?
+*/*/.*.sw?
+*/*/*/.*.sw?

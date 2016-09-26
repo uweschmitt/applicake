@@ -16,6 +16,9 @@ class Argument(object):
         if self.name in [Keys.WORKDIR,Keys.ALL_ARGS]:
             self.default = ''
 
+    def __str__(self):
+        return "<Argument name=%r help=%r default=%r>" % (self.name, self.help, self.default)
+
 
 def parse_sysargs(arglist):
     #helptext printing style from argparse
