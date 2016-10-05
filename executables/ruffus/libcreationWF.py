@@ -6,7 +6,7 @@ import subprocess
 from ruffus import *
 
 
-basepath = os.path.dirname(__file__) + '/../../'
+basepath = os.path.dirname(os.path.abspath(__file__)) + '/../../'
 
 
 def setup():
@@ -21,9 +21,10 @@ COMMENT = WFTEST - newUPS LC
 
 WORKFLOW = wf
 LOG_LEVEL = DEBUG
-BASEDIR = /cluster/scratch_xl/shareholder/imsb_ra/workflows
-DATASET_DIR = /cluster/scratch_xl/shareholder/imsb_ra/datasets
-DROPBOX = /cluster/scratch_xl/shareholder/imsb_ra/openbis_dropbox
+
+BASEDIR = /cluster/project/aebersold/workflows
+DATASET_DIR = /cluster/project/aebersold/datasets
+DROPBOX = /cluster/project/aebersold/dropbox/generic
 
 EXPERIMENT = E1309101552
 DATASET_CODE = 20120320163951515-361883, 20120320163653755-361882, 20120320164249179-361886
@@ -48,10 +49,14 @@ TSV_SERIES =
 SWATH_WINDOW_FILE = /cluster/apps/imsbtools/stable/files/swath_wnd_32.txt
 """)
 
+def tool_path(tool):
+    return os.path.normpath(os.path.join(basepath, tool))
+
 @follows(setup)
 @files('input.ini', 'getexperiment.ini')
 def getexperiment(infile, outfile):
-    subprocess.check_call(['python', basepath + 'appliapps/openbis/dss.py',
+
+    subprocess.check_call(['python', tool_path('appliapps/openbis/dss.py'),
                            '--INPUT', infile, '--OUTPUT', outfile, '--EXECUTABLE', 'getexperiment'])
 @follows(getexperiment)
 @files('getexperiment.ini', 'processexperiment.ini')

@@ -20,7 +20,7 @@ def setup():
         except: pass
         with open("input.ini", 'w') as f:
             f.write("""
-DATASET_CODE = 20120320164249179-361886
+DATASET_CODE = 20151221172246046-1129816
 PARAMETERSETFILE =
 
 WORKFLOW = DIA_UMPIRE_WITH_MERGE
