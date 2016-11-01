@@ -12,6 +12,13 @@ from applicake.coreutils.keys import Keys, KeyHelp
 from applicake.coreutils.log import Logger
 from applicake.coreutils.arguments import Argument, parse_sysargs
 from applicake.coreutils.info import get_handler
+from applicake.procutils import start_background_observer
+
+
+
+print
+print "this is", __file__
+print
 
 
 class IApp(object):
@@ -202,9 +209,10 @@ class WrappedApp(BasicApp):
         # read input "streaming" from subprocess: http://stackoverflow.com/a/17698359
         # get exitcode: http://docs.python.org/2/library/subprocess.html#subprocess.Popen.returncode
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
+        start_background_observer(p, log.debug)
         out = ""
         for line in iter(p.stdout.readline, ''):
-            print line.strip()
+            print line.rstrip()
             out += line
         p.communicate()
         exit_code = p.returncode
