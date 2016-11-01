@@ -65,7 +65,9 @@ class IApp(object):
 class BasicApp(IApp):
     @classmethod
     def main(cls):
-        print("this is", os.path.abspath(__file__))
+        print
+        print "this is", os.path.abspath(__file__)
+        print
         log = None
         try:
             start = time.time()
