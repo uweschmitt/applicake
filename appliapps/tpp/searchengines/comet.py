@@ -65,6 +65,10 @@ class Comet(SearchEnginesBase):
             print "MemoryError"
             raise RuntimeError("The job run out of RAM!")
         check_stdout(log,stdout)
+        if exit_code:
+            log.warn("exit_code is %s", exit_code)
+            mzxml = info[Keys.MZXML]
+            log.warn("maybe the input file %s does not exist any more. check this !" % mzxml)
         check_exitcode(log, exit_code)
         check_xml(log, info[Keys.PEPXML])
         return info

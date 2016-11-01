@@ -13,7 +13,8 @@ class Dss(WrappedApp):
     that the DSS generates the JOB_ID for the workflow
     """
 
-    default_keys = {'getmsdata': 'MZXML', 'getexperiment': 'SEARCH', 'getdataset': 'DSSOUT'}
+    default_keys = {'getmsdata': 'MZXML', 'getexperiment': 'SEARCH', 'getdataset': 'DSSOUT',
+                    'getmsdata_fast': 'MZXML'}
 
     ALLOWED_PREFIXES = default_keys.keys()
     TRUES = ['TRUE', 'T', 'YES', 'Y', '1']
@@ -26,12 +27,17 @@ class Dss(WrappedApp):
             Argument('EXPERIMENT', 'experiment code to get for for getexperiment'),
             Argument('DATASET_DIR', 'cache directory'),
             Argument('DSS_KEEP_NAME', "for 'getmsdata' only: output keeps original file name if set to true "
-                                      "(otherwise it will be changed to samplecode~dscode.mzXXML)",
+                                      "(otherwise it will be changed to samplecode~dscode.mzXML)",
                      default='false')
         ]
 
     def prepare_run(self, log, info):
         executable = info[Keys.EXECUTABLE]
+
+        # temporary fix because getmsdata_fast is broken:
+        if executable == "getmsdata_fast":
+            executable = info[Keys.EXECUTABLE] = "getmsdata"
+
         if not executable in self.ALLOWED_PREFIXES:
             raise Exception("Executable %s must be one of [%s]" % (executable, self.ALLOWED_PREFIXES))
 
@@ -42,7 +48,7 @@ class Dss(WrappedApp):
 
         outdir = info['DATASET_DIR']
 
-        if executable == 'getmsdata' and not info['DSS_KEEP_NAME'].upper() == 'TRUE':
+        if executable in ('getmsdata', 'getmsdata_fast') and not info['DSS_KEEP_NAME'].upper() == 'TRUE':
             koption = '-c'
         else:
             koption = ''

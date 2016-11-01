@@ -77,7 +77,7 @@ class RequantValues(WrappedApp):
             flags += " --method %s --in %s --do_single_run %s" % (info['REQUANT_METHOD']," ".join(trlist),localtr)
 
         command = "gunzip -c %s > %s && " \
-                  "requantAlignedValues.py --peakgroups_infile %s --out %s %s" % (
+                  "requant_aligned_values_with_old_pymzml.sh --peakgroups_infile %s --out %s %s" % (
                       info["CHROM_MZML"], localmzml,
                       info['ALIGNMENT_TSV'], info['REQUANT_TSV'], flags)
 
