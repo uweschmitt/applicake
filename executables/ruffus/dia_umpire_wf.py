@@ -1,3 +1,4 @@
+import pdb
 #!/usr/bin/env python
 import os
 import sys
@@ -7,7 +8,7 @@ from ruffus import *
 
 
 
-basepath = os.path.dirname(os.path.abspath(__file__)) + '/../../'
+basepath = os.path.normpath(os.path.dirname(os.path.abspath(__file__)) + '/../../') + "/"
 print(basepath)
 
 
@@ -34,6 +35,11 @@ TMPDIR = /scratch
 """)
 
 
+def check_call(args):
+    print(" ".join(args))
+    subprocess.check_call(args)
+
+
 @follows(setup)
 @files("input.ini", "output_job_id.ini")
 def job_id(infile, outfile):
@@ -44,28 +50,27 @@ def job_id(infile, outfile):
 @follows(job_id)
 @split("output_job_id.ini", "split.ini_*")
 def split_dataset(infile, unused_outfile):
-    subprocess.check_call(['python', basepath + 'appliapps/flow/split.py',
-                           '--INPUT', infile, '--SPLIT', 'split.ini', '--SPLIT_KEY', 'DATASET_CODE'])
+    check_call(['python', basepath + 'appliapps/flow/split.py',
+                '--INPUT', infile, '--SPLIT', 'split.ini', '--SPLIT_KEY', 'DATASET_CODE'])
 
 
 @transform(split_dataset, regex("split.ini_"), "dss.ini_")
 def dss(infile, outfile):
-    subprocess.check_call(['python', basepath + 'appliapps/openbis/dss.py',
-                           '--INPUT', infile, '--OUTPUT', outfile, '--EXECUTABLE', 'getdataset'])
+    check_call(['python', basepath + 'appliapps/openbis/dss.py',
+              '--INPUT', infile, '--OUTPUT', outfile, '--EXECUTABLE', 'getdataset'])
 
 
 @transform(dss, regex("dss.ini_"), "dia_umpire.ini_")
 def dia_umpire(infile, outfile):
-    subprocess.check_call(['python', basepath + 'appliapps/dia_umpire/dia_umpire.py',
+    check_call(['python', basepath + 'appliapps/dia_umpire/dia_umpire.py',
                            '--INPUT', infile, '--OUTPUT', outfile])
 
 
 #@files("mergedataset.ini_0", "cp2dropbox.ini")
 @transform(dia_umpire, regex("dia_umpire.ini_"), "cp2dropbox.ini_")
 def cp2dropbox(infile, outfile):
-    subprocess.check_call(['python', basepath + 'appliapps/dia_umpire/dropbox.py',
-                           '--INPUT', infile, '--OUTPUT', outfile])
-
+    check_call(['python', basepath + 'appliapps/dia_umpire/dropbox.py',
+                      '--INPUT', infile, '--OUTPUT', outfile])
 
 
 pipeline_run([cp2dropbox], multiprocess=3, verbose=2)
