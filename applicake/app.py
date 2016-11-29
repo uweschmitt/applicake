@@ -212,13 +212,19 @@ class WrappedApp(BasicApp):
         # read input "streaming" from subprocess: http://stackoverflow.com/a/17698359
         # get exitcode: http://docs.python.org/2/library/subprocess.html#subprocess.Popen.returncode
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
-        start_background_observer(p, log.debug)
+        use_profiler = info.get("PROFILE", '') == 'True'
+        if use_profiler:
+            print "START PROFILER"
+            start_background_observer(p, log.debug)
         out = ""
         for line in iter(p.stdout.readline, ''):
             print line.rstrip()
             out += line
         p.communicate()
         exit_code = p.returncode
+        if use_profiler:
+            # giv background thread some time to finish
+            time.sleep(5.0)
         return exit_code, out
 
     def validate_run(self, log, info, exit_code, stdout):
