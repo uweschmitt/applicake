@@ -32,7 +32,7 @@ class Dss(WrappedApp):
         ]
 
     def prepare_run(self, log, info):
-        executable = info[Keys.EXECUTABLE]
+        executable = info[Keys.EXECUTABLE].strip()
 
         # temporary fix because getmsdata_fast is broken:
         if executable == "getmsdata_fast":
