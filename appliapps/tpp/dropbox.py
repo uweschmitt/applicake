@@ -61,7 +61,8 @@ class Copy2IdentDropbox(BasicApp):
         if info.get('RUNTPP2VIEWER', 'no') == 'no':
             info["LINKTEXT"] = "RUNTPP2VIEWER was 'no'. If you want to visualize the results"
         else:
-            basepath = '/IMSB/ra/' + info['USERNAME'] + '/html/petunia/tpp2viewer3_' + info['EXPERIMENT_CODE']
+            # basepath = '/IMSB/ra/' + info['USERNAME'] + '/html/petunia/tpp2viewer3_' + info['EXPERIMENT_CODE']
+            basepath = '/nfs/195.176.109.15/nas/fs2102/biol_ibt_usr_s1/' + info['USERNAME'] + '/html/petunia/tpp2viewer3_' + info['EXPERIMENT_CODE']
             info["LINKTEXT"] = """To visualize the results use:
 https://imsb-ra-tpp.ethz.ch/tpp/cgi-bin/PepXMLViewer.cgi?xmlFileName=%s
 https://imsb-ra-tpp.ethz.ch/tpp/cgi-bin/protxml2html.pl?xmlfile=%s

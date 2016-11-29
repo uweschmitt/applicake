@@ -13,7 +13,8 @@ class Tpp2ViewerAndMail(WrappedApp):
         return [
             Argument('DROPBOXSTAGE', 'location of dropbox stage folder'),
             Argument("EXPERIMENT_CODE", 'experiment code created by dropbox'),
-            Argument("VIEWER_BASEPATH", 'base folder for tpp2viewer', default='/IMSB/ra/%s/html/petunia'),
+            Argument("VIEWER_BASEPATH", 'base folder for tpp2viewer',
+                     default='/nfs/195.176.109.15/nas/fs2102/biol_ibt_usr_s1/%s/html/petunia'),
             Argument("RUNTPP2VIEWER", 'do run tpp2viewer'),
         ]
 
