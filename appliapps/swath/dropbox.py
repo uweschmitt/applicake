@@ -101,7 +101,9 @@ class Copy2SwathDropbox(BasicApp):
         mailtext = ""
         if info.get("RUNSWATH2VIEWER","") == "true":
             try:
-                destdir = "/IMSB/ra/%s/html/tapir/%s" % (getpass.getuser(), dsinfo['EXPERIMENT'])
+                #destdir = "/IMSB/ra/%s/html/tapir/%s" % (getpass.getuser(), dsinfo['EXPERIMENT'])
+                destdir = "/nfs/195.176.109.15/nas/fs2102/biol_ibt_usr_s1/%s/tapir/%s" %(getpass.getuser(), dsinfo['EXPERIMENT'])
+
                 makedirs_clean(destdir)
                 shutil.copy(info['ALIGNMENT_TSV'],destdir)
                 for chrom in info['CHROM_MZML']:
