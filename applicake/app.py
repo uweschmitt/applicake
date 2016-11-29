@@ -204,7 +204,10 @@ class WrappedApp(BasicApp):
             cmd = "module purge && module load %s && %s" % (info['MODULE'], cmd)
 
         cmd = cmd.replace("\n", "")
-        log.debug("command is [%s]" % cmd)
+        log.debug("")
+        log.debug("command is")
+        log.debug(cmd)
+        log.debug("")
         # stderr to stdout: http://docs.python.org/2/library/subprocess.html#subprocess.STDOUT
         # read input "streaming" from subprocess: http://stackoverflow.com/a/17698359
         # get exitcode: http://docs.python.org/2/library/subprocess.html#subprocess.Popen.returncode
