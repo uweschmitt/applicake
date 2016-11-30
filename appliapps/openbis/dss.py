@@ -5,6 +5,7 @@ from applicake.app import WrappedApp
 from applicake.apputils import validation
 from applicake.coreutils.arguments import Argument
 from applicake.coreutils.keys import Keys, KeyHelp
+from applicake.coreutils.submitter import name_of_submitting_host
 
 
 class Dss(WrappedApp):
@@ -58,7 +59,11 @@ class Dss(WrappedApp):
         else:
             dscode_to_get = info[Keys.DATASET_CODE]
 
-        command = "%s -v -r %s --out=%s %s %s" % (executable, self.rfile, outdir, koption, dscode_to_get)
+        submitter = name_of_submitting_host()
+        if submitter is None:
+            submitter = "eulertest-portal.ethz.ch"
+
+        command = "SUBMITTER=%s %s -v -r %s --out=%s %s %s" % (submitter, executable, self.rfile, outdir, koption, dscode_to_get)
         return info, command
 
     def validate_run(self, log, info, exit_code, out):
