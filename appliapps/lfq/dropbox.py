@@ -56,11 +56,9 @@ class Copy2QuantDropbox(BasicApp):
 
         #create witolds LFQ report mail
         reportcmd = 'mailLFQ.sh %s %s %s %s 2>&1' % (proppath, expinfo['PEPCSV'], expinfo['PROTCSV'], getpass.getuser())
-        try:
-            subprocess.call(reportcmd, shell=True)
+        subprocess.check_call(reportcmd, shell=True)
+        if os.path.exists("analyseLFQ.pdf"):
             shutil.copy('analyseLFQ.pdf', info['DROPBOXSTAGE'])
-        except:
-            log.warn("LFQ report command [%s] failed, skipping" % reportcmd)
 
         dropbox.move_stage_to_dropbox(log, info['DROPBOXSTAGE'], info['DROPBOX'])
 

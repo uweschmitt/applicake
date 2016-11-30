@@ -119,11 +119,10 @@ class Copy2SwathDropbox(BasicApp):
         reportcmd = 'mailSWATH.sh "%s" "%s" "%s" 2>&1' % (info['ALIGNMENT_TSV'], info['COMMENT'], mailtext)
         if Keys.MODULE in info:
             reportcmd = 'module load %s && %s'%(info[Keys.MODULE],reportcmd)
-        try:
-            subprocess.call(reportcmd, shell=True)
+
+        subprocess.check_call(reportcmd, shell=True)
+        if os.path.exists('analyseSWATH.pdf'):
             shutil.copy('analyseSWATH.pdf', stagebox)
-        except:
-            log.warn("SWATH report command [%s] failed, skipping" % reportcmd)
 
         dropbox.move_stage_to_dropbox(log, stagebox, info['DROPBOX'], keepCopy=False)
 
