@@ -85,7 +85,7 @@ class Dss(WrappedApp):
         executable = info[Keys.EXECUTABLE]
         if missing:
             for p in missing:
-                log.error("%s failed for %" % (executable, p))
+                log.error("%s failed for %s" % (executable, p))
             raise Exception("files which should be extracted from openbis are missing")
 
 
