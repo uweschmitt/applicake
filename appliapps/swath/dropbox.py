@@ -54,11 +54,19 @@ class Copy2SwathDropbox(BasicApp):
             subprocess.check_call('zip -j ' + archive + ' ' + entry + " 2>&1", shell=True)
 
         #PATCH: reimport old classifier if existing was used
-        if 'MPR_LDA_PATH' in info and info['MPR_LDA_PATH'] != "":
-            subprocess.check_call('zip -j ' + archive + ' ' + info['MPR_LDA_PATH'] + " 2>&1", shell=True)
+        for key in ("MPR_LDA_PATH", "MPR_WT_PATH"):
+            path = info.get(key, "")
+            if path:
+                if not os.path.exists(path):
+                    raise Exception("can not add %s to archive, file does not exist" % path)
+                subprocess.check_call('zip -j ' + archive + ' ' + path + " 2>&1", shell=True)
+        #if 'MPR_LDA_PATH' in info and info['MPR_LDA_PATH'] != "":
+            #subprocess.check_call('zip -j ' + archive + ' ' + info['MPR_LDA_PATH'] + " 2>&1", shell=True)
 
-        if 'MPR_WT_PATH' in info and info['MPR_WT_PATH'] != "":
-            subprocess.check_call('zip -j ' + archive + ' ' + info['MPR_WT_PATH'] + " 2>&1", shell=True)
+        #if 'MPR_WT_PATH' in info and info['MPR_WT_PATH'] != "":
+            #if not os.path.exists(info['MPR_WT_PATH']):
+                #raise Exception("%s does not exist" % info['MPR_WT_PATH'])
+            #subprocess.check_call('zip -j ' + archive + ' ' + info['MPR_WT_PATH'] + " 2>&1", shell=True)
 
         #SPACE PROJECT given
         dsinfo = {}
