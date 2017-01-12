@@ -63,7 +63,17 @@ class Dss(WrappedApp):
         if submitter is None:
             submitter = "eulertest-portal.ethz.ch"
 
-        command = "SUBMITTER=%s %s -v -r %s --out=%s %s %s" % (submitter, executable, self.rfile, outdir, koption, dscode_to_get)
+        openbis_stores = {
+                'euler-portal.ethz.ch': 'https://ra-openbis.ethz.ch',
+                'eulertest-portal.ethz.ch': 'https://openbis-test.ethz.ch:8443'
+        }
+
+        openbis_instance = openbis_stores.get(submitter)
+        if openbis_instance is None:
+            raise RuntimeError("no openbis instance configures for %s. I only know %r" % (submitter, openbis_stores))
+
+        # command = "%s -H %s -v -r %s --out=%s %s %s" % (executable, openbis_instance, self.rfile, outdir, koption, dscode_to_get)
+        command = "%s -v -r %s --out=%s %s %s" % (executable, self.rfile, outdir, koption, dscode_to_get)
         return info, command
 
     def validate_run(self, log, info, exit_code, out):
