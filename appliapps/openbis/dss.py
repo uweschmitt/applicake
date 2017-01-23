@@ -72,8 +72,7 @@ class Dss(WrappedApp):
         if openbis_instance is None:
             raise RuntimeError("no openbis instance configures for %s. I only know %r" % (submitter, openbis_stores))
 
-        # command = "%s -H %s -v -r %s --out=%s %s %s" % (executable, openbis_instance, self.rfile, outdir, koption, dscode_to_get)
-        command = "%s -v -r %s --out=%s %s %s" % (executable, self.rfile, outdir, koption, dscode_to_get)
+        command = "%s -H %s -v -r %s --out=%s %s %s" % (executable, openbis_instance, self.rfile, outdir, koption, dscode_to_get)
         return info, command
 
     def validate_run(self, log, info, exit_code, out):
