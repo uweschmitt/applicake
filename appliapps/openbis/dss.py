@@ -65,7 +65,7 @@ class Dss(WrappedApp):
 
         openbis_stores = {
                 'euler-portal.ethz.ch': 'https://ra-openbis.ethz.ch',
-                'eulertest-portal.ethz.ch': 'https://openbis-test.ethz.ch:8443'
+                'eulertest-portal.ethz.ch': 'https://openbis-test.ethz.ch'
         }
 
         openbis_instance = openbis_stores.get(submitter)
