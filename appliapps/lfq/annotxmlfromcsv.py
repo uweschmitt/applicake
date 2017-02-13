@@ -118,6 +118,7 @@ class AnnotProtxmlFromUpdatedCsv(BasicApp):
                     elif line.strip().startswith("<parameter"):
                         try:
                             if self._get_attribute_value(line, "type") == "abundance":
+                                sink.write(line)
                                 continue  # throw away old abundance entries
                         except ValueError:  # different "parameter" element
                             pass
