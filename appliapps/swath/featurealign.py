@@ -2,6 +2,8 @@
 import glob
 import os
 import shutil
+import tempfile
+
 
 from applicake.app import WrappedApp
 from applicake.apputils import validation
@@ -71,9 +73,14 @@ class FeatureAlignment(WrappedApp):
         if info['ISOTOPIC_GROUPING'] == "false":
             flags += " --disable_isotopic_grouping "
 
-        command = "feature_alignment.py --file_format openswath --in %s --out %s " \
+        # workaround to fix "too many arguemnts" isse for may files (broke with 1022 files):
+        p = os.path.join(tempfile.mkdtemp(), "inputs.txt")
+        with open(p, "w") as fh:
+            fh.write(" ".join(info["MPROPHET_TSV"]))
+
+        command = "feature_alignment.py --file_format openswath --in $(cat %s) --out %s " \
                   "--out_meta %s --tmpdir %s %s" % (
-                      " ".join(info["MPROPHET_TSV"]), info['ALIGNMENT_TSV'],
+                      p, info['ALIGNMENT_TSV'],
                       info['ALIGNMENT_YAML'], tmpdir, flags)
 
         return info, command
