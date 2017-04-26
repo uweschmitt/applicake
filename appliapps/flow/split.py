@@ -37,7 +37,10 @@ class Split(BasicApp):
             infocopy[Keys.SUBJOBLIST].append("%s%s%d%s%d" % (key, Keys.SUBJOBSEP, i, Keys.SUBJOBSEP, len(value)))
             path = basename + "_" + str(i)
             log.debug("Writing to split file " + path)
-            log.debug("write %r" % infocopy)
+            infocopy_str = str(infocopy)
+            if len(infocopy_str) > 200:
+                infocopy_str = infocopy_str[:200] + "... (truncated)"
+            log.debug("write %r" % infocopy_str)
             get_handler(basename).write(infocopy, path)
 
         return info
