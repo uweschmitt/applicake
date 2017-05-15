@@ -92,12 +92,14 @@ class OpenSwathWorkflow(WrappedApp):
             info['CHROM_MZML'] = os.path.join(info[Keys.WORKDIR], samplename + '.chrom.mzML.gz')
             chrommlmv = " gzip -c %s > %s " % (tmpchrom, info['CHROM_MZML'])
 
-        #command: 1) copy mzXML to local, 2) OpenSwathWorkflow, 3) copy result tsv (& ev. chrom.mzml) to global
-        command = """cp -v %s %s &&
+        #command: 0) stat mzXML 1) copy mzXML to local, 2) OpenSwathWorkflow, 3) copy result tsv (& ev. chrom.mzml) to global
+        # Note: 0) to avoid NAS issues where mzXML is stored, possibly related to NAS cache being somehow out of sync
+        mzxml = info["MZXML"]
+        command = """stat %s && cp -v %s %s &&
         OpenSwathWorkflow -in %s -tr %s -out_tsv %s -tempDirectory %s -readOptions cacheWorkingInMemory -batchSize 1000 %s &&
         cp -v %s %s &&
         %s""" % (
-            info["MZXML"], tmpmzxml,
+            mzxml, mzxml, tmpmzxml,
             tmpmzxml, info['TRAML_CSV'], tmptsv, tmpdir, flags,
             tmptsv, info['FEATURETSV'],
             chrommlmv
