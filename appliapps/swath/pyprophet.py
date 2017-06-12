@@ -44,6 +44,10 @@ class PyProphet(WrappedApp):
         "MPR_UIS_SCORING_IDENTIFICATION_PROBABILITY": "uis_scoring.identification_probability",
         "MPR_UIS_SCORING_ISOTOPE_OVERLAP_THRESHOLD": "uis_scoring.isotope_overlap_threshold",
     }
+    opts_bool = {
+        "MPR_MAYU": "export.mayu",
+        "MPR_FINAL_STATISTICS_EMP_P": "final_statistics.emp_p",
+    }
 
     def add_args(self):
         ret = [
@@ -92,8 +96,10 @@ class PyProphet(WrappedApp):
             if info.get(k, "") != "":
                 flags += " --%s=%s" % (v, info[k])
 
-        if info.get("MPR_MAYU", "") == "True":
-            flags += " --export.mayu"
+        # parse boolean options (flags; no value)
+        for optinfo, optbin in self.opts_bool.iteritems():
+            if info.get(optinfo,"").lower() == "true":
+                flags += " --%s" % (optbin)
 
         command = 'mProphetScoreSelector.sh %s %s %s && ' \
                   'pyprophet --ignore.invalid_score_columns --target.dir=%s %s %s' % (
