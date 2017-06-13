@@ -56,8 +56,9 @@ class PyProphet(WrappedApp):
 
             Argument('MPR_MAINVAR', "main mprophet var"),
             Argument('MPR_VARS', "side mprophet vars"),
-            Argument('MPR_MAYU', "true to export mayu")
         ]
+        for k, v in self.opts_bool.iteritems():
+            ret.append(Argument(k, 'true to enable %s' % v))
         for k, v in self.opts.iteritems():
             ret.append(Argument(k, v))
         return ret
