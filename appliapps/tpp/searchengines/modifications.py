@@ -248,7 +248,7 @@ class CometModConverter(AbstractModConverter):
                 vmods += "variable_C_terminus = %s\n" % mono
             if not residues: continue
             i+=1
-            if i > 6: raise Exception("Comet only supports up to 6 variable mods")
+            if i > 9: raise Exception("Comet only supports up to 9 variable mods")
 
             vmods += "variable_mod0%s = %f %s 0 3\n" % (i, mono, "".join(residues))
 
