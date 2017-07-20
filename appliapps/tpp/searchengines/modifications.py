@@ -161,7 +161,7 @@ class OmssaModConverter(AbstractModConverter):
             name, mono, avg, residues = mod
             for res in residues:
                 i += 1
-                if i > 9:
+                if i > 10:
                     raise Exception("For Omssa only up to 10 modifications are suported")
                 no = i + 118
                 smods.append(str(no))
@@ -173,7 +173,7 @@ class OmssaModConverter(AbstractModConverter):
             name, mono, avg, residues = mod
             for res in residues:
                 i += 1
-                if i > 9:
+                if i > 10:
                     raise Exception("For Omssa only up to 10 modifications are suported")
                 no = i + 118
                 vmods.append(str(no))
