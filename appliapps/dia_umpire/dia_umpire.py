@@ -24,6 +24,8 @@ class DiaUmpire(WrappedApp):
         # in case getdataset instead of getmsdata was used key MZXML is not set but mzXML.gz is in DSSOUT list
         if not isinstance(info['DSSOUT'], list):
             info['DSSOUT'] = [info['DSSOUT']]
+        if not any(wf.endswith("/ms-injection.properties") for wf in info['DSSOUT']):
+            raise ValueError("the dataset you've chosen contains no ms-injection.properties file")
         for written_file in info['DSSOUT']:
             log.info("check for mzXML(.gz) extension: %s " % written_file)
             if written_file.endswith('/ms-injection.properties'):
