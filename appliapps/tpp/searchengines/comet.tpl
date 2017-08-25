@@ -1,17 +1,17 @@
-# comet_version 2015.02 rev. 0
+# comet_version 2016.01 rev. 3
 # Comet MS/MS search engine parameters file.
 # Everything following the '#' symbol is treated as a comment.
 
 database_name = $DBASE
 decoy_search = 0                       # 0=no (default), 1=concatenated search, 2=separate search
 
-num_threads = $THREADS                        # 0=poll CPU to set num threads; else specify num threads directly (max 64)
+num_threads = $THREADS                 # 0=poll CPU to set num threads; else specify num threads directly (max 64)
 
 #
 # masses
 #
 peptide_mass_tolerance = $PRECMASSERR
-peptide_mass_units = $PRECMASSUNIT                 # 0=amu, 1=mmu, 2=ppm
+peptide_mass_units = $PRECMASSUNIT     # 0=amu, 1=mmu, 2=ppm
 mass_type_parent = 1                   # 0=average masses, 1=monoisotopic masses
 mass_type_fragment = 1                 # 0=average masses, 1=monoisotopic masses
 precursor_tolerance_type = 0           # 0=MH+ (default), 1=precursor m/z; only valid for amu/mmu tolerances
@@ -21,15 +21,24 @@ isotope_error = 0                      # 0=off, 1=on -1/0/1/2/3 (standard C13 er
 # search enzyme
 #
 search_enzyme_number = $ENZYME               # choose from list at end of this params file
-num_enzyme_termini = $NUM_TERM_CLEAVAGES                 # valid values are 1 (semi-digested), 2 (fully digested, default), 8 N-term, 9 C-term
-allowed_missed_cleavage = $MISSEDCLEAVAGE            # maximum value is 5; for enzyme search
+num_enzyme_termini = $NUM_TERM_CLEAVAGES     # 1 (semi-digested), 2 (fully digested, default), 8 C-term unspecific , 9 N-term unspecific
+allowed_missed_cleavage = $MISSEDCLEAVAGE    # maximum value is 5; for enzyme search
 
 #
 # Up to 9 variable modifications are supported
-# format:  <mass> <residues> <0=variable/1=binary> <max_mods_per_peptide> <term_distance> <n/c-term> <required>
+# format:  <mass> <residues> <0=variable/else binary> <max_mods_per_peptide> <term_distance> <n/c-term> <required>
 #     e.g. 79.966331 STY 0 3 -1 0 0
 #
 $VARIABLE_MODS
+#variable_mod01 = 15.9949 M 0 3 -1 0 0
+#variable_mod02 = 79.966331 STY 0 3 -1 0 0
+#variable_mod03 = 0.0 X 0 3 -1 0 0
+#variable_mod04 = 0.0 X 0 3 -1 0 0
+#variable_mod05 = 0.0 X 0 3 -1 0 0
+#variable_mod06 = 0.0 X 0 3 -1 0 0
+#variable_mod07 = 0.0 X 0 3 -1 0 0
+#variable_mod08 = 0.0 X 0 3 -1 0 0
+#variable_mod09 = 0.0 X 0 3 -1 0 0
 max_variable_mods_in_peptide = 5
 require_variable_mod = 0
 
@@ -39,7 +48,7 @@ require_variable_mod = 0
 # ion trap ms/ms:  1.0005 tolerance, 0.4 offset (mono masses), theoretical_fragment_ions = 1
 # high res ms/ms:    0.02 tolerance, 0.0 offset (mono masses), theoretical_fragment_ions = 0
 #
-fragment_bin_tol = $FRAGMASSERR              # binning to use on fragment ions
+fragment_bin_tol = $FRAGMASSERR        # binning to use on fragment ions
 fragment_bin_offset = 0.4              # offset position to start the binning (0.0 to 1.0)
 theoretical_fragment_ions = 1          # 0=use flanking peaks, 1=M peak only
 use_A_ions = 0
@@ -104,7 +113,6 @@ clear_mz_range = 0.0 0.0               # for iTRAQ/TMT type data; will clear out
 #
 
 $STATIC_MODS
-
 #add_Cterm_peptide = 0.0
 #add_Nterm_peptide = 0.0
 #add_Cterm_protein = 0.0
@@ -128,12 +136,12 @@ $STATIC_MODS
 #add_O_ornithine = 0.0000               # added to O - avg. 132.1610, mono  132.08988
 #add_H_histidine = 0.0000               # added to H - avg. 137.1393, mono. 137.05891
 #add_F_phenylalanine = 0.0000           # added to F - avg. 147.1739, mono. 147.06841
+#add_U_selenocysteine = 0.0000          # added to U - avg. 150.3079, mono. 150.95363
 #add_R_arginine = 0.0000                # added to R - avg. 156.1857, mono. 156.10111
 #add_Y_tyrosine = 0.0000                # added to Y - avg. 163.0633, mono. 163.06333
 #add_W_tryptophan = 0.0000              # added to W - avg. 186.0793, mono. 186.07931
 #add_B_user_amino_acid = 0.0000         # added to B - avg.   0.0000, mono.   0.00000
 #add_J_user_amino_acid = 0.0000         # added to J - avg.   0.0000, mono.   0.00000
-#add_U_user_amino_acid = 0.0000         # added to U - avg.   0.0000, mono.   0.00000
 #add_X_user_amino_acid = 0.0000         # added to X - avg.   0.0000, mono.   0.00000
 #add_Z_user_amino_acid = 0.0000         # added to Z - avg.   0.0000, mono.   0.00000
 
@@ -152,4 +160,3 @@ $STATIC_MODS
 8.  Glu_C                  1      DE          P
 9.  PepsinA                1      FL          P
 10. Chymotrypsin           1      FWYL        P
-
