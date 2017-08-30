@@ -6,7 +6,7 @@ from appliapps.tpp.searchengines.modifications import genmodstr_to_engine
 from applicake.apputils.templates import read_mod_write, get_tpl_of_class
 from applicake.apputils.validation import check_exitcode, check_xml, check_stdout
 from applicake.coreutils.arguments import Argument
-from applicake.coreutils.keys import Keys, KeyHelp
+from applicake.coreutils.keys import Keys
 from appliapps.tpp.searchengines.searchenginebase import SearchEnginesBase
 
 
@@ -20,6 +20,18 @@ class Comet(SearchEnginesBase):
         args.append(Argument('COMET_EXE', 'executable name.', default='comet'))
 
         return args
+
+    def get_fragment_ions_values(self, msms_type):
+        '''Return tuple corresponding to, respectively:
+            fragment_bin_tol, fragment_bin_offset, theoretical_fragment_ions
+        parameters of the Comet search binary.
+        '''
+        if msms_type == 'high_res':
+            return (0.02, 0.0, 0)
+        if msms_type == 'ion_trap':
+            return (1.0005, 0.4, 1)
+        raise RuntimeError('Unknown "Fragment ions" option value "%s"' % msms_type)
+
 
     def prepare_run(self, log, info):
         wd = info[Keys.WORKDIR]
@@ -40,8 +52,15 @@ class Comet(SearchEnginesBase):
         if info['FRAGMASSUNIT'] == 'ppm':
             raise RuntimeError("Comet does not support frag mass error unit PPM")
 
-        if not 0.01 < float(app_info['FRAGMASSERR']) < 1.1:
-            log.warn('Very high or low fragmasserror ' + app_info['FRAGMASSERR'])
+        # Note: FRAGMASSERR does not apply to Comet; instead use pre-defined
+        #       FRAGBINTOL and FRAGBINOFF values
+        frag_bin_tol, frag_bin_off, frag_ions_theor = self.get_fragment_ions_values(
+            info.get('COMET_FRAGMENT_IONS', None))
+        app_info.update({
+            'FRAGBINTOL': frag_bin_tol,
+            'FRAGBINOFF': frag_bin_off,
+            'FRAGIONSTHEOR': frag_ions_theor,
+        })
 
         app_info["STATIC_MODS"], app_info["VARIABLE_MODS"], _ = genmodstr_to_engine(info["STATIC_MODS"],
                                                                                  info["VARIABLE_MODS"], 'Comet')

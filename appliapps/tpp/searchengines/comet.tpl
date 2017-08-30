@@ -5,24 +5,24 @@
 database_name = $DBASE
 decoy_search = 0                       # 0=no (default), 1=concatenated search, 2=separate search
 
-num_threads = $THREADS                 # 0=poll CPU to set num threads; else specify num threads directly (max 64)
+num_threads = $THREADS                        # 0=poll CPU to set num threads; else specify num threads directly (max 64)
 
 #
 # masses
 #
 peptide_mass_tolerance = $PRECMASSERR
-peptide_mass_units = $PRECMASSUNIT     # 0=amu, 1=mmu, 2=ppm
+peptide_mass_units = $PRECMASSUNIT                 # 0=amu, 1=mmu, 2=ppm
 mass_type_parent = 1                   # 0=average masses, 1=monoisotopic masses
 mass_type_fragment = 1                 # 0=average masses, 1=monoisotopic masses
-precursor_tolerance_type = 0           # 0=MH+ (default), 1=precursor m/z; only valid for amu/mmu tolerances
-isotope_error = 0                      # 0=off, 1=on -1/0/1/2/3 (standard C13 error), 2= -8/-4/0/4/8 (for +4/+8 labeling)
+precursor_tolerance_type = 1           # 0=MH+ (default), 1=precursor m/z; only valid for amu/mmu tolerances
+isotope_error = 1                      # 0=off, 1=on -1/0/1/2/3 (standard C13 error), 2= -8/-4/0/4/8 (for +4/+8 labeling)
 
 #
 # search enzyme
 #
-search_enzyme_number = $ENZYME               # choose from list at end of this params file
-num_enzyme_termini = $NUM_TERM_CLEAVAGES     # 1 (semi-digested), 2 (fully digested, default), 8 C-term unspecific , 9 N-term unspecific
-allowed_missed_cleavage = $MISSEDCLEAVAGE    # maximum value is 5; for enzyme search
+search_enzyme_number = $ENZYME                     # choose from list at end of this params file
+num_enzyme_termini = $NUM_TERM_CLEAVAGES                       # 1 (semi-digested), 2 (fully digested, default), 8 C-term unspecific , 9 N-term unspecific
+allowed_missed_cleavage = $MISSEDCLEAVAGE                  # maximum value is 5; for enzyme search
 
 #
 # Up to 9 variable modifications are supported
@@ -48,16 +48,16 @@ require_variable_mod = 0
 # ion trap ms/ms:  1.0005 tolerance, 0.4 offset (mono masses), theoretical_fragment_ions = 1
 # high res ms/ms:    0.02 tolerance, 0.0 offset (mono masses), theoretical_fragment_ions = 0
 #
-fragment_bin_tol = $FRAGMASSERR        # binning to use on fragment ions
-fragment_bin_offset = 0.4              # offset position to start the binning (0.0 to 1.0)
-theoretical_fragment_ions = 1          # 0=use flanking peaks, 1=M peak only
+fragment_bin_tol = $FRAGBINTOL                 # binning to use on fragment ions
+fragment_bin_offset = $FRAGBINOFF              # offset position to start the binning (0.0 to 1.0)
+theoretical_fragment_ions = $FRAGIONSTHEOR          # 0=use flanking peaks, 1=M peak only
 use_A_ions = 0
 use_B_ions = 1
 use_C_ions = 0
 use_X_ions = 0
 use_Y_ions = 1
 use_Z_ions = 0
-use_NL_ions = 1                        # 0=no, 1=yes to consider NH3/H2O neutral loss peaks
+use_NL_ions = 0                        # 0=no, 1=yes to consider NH3/H2O neutral loss peaks
 
 #
 # output
