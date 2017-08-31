@@ -18,6 +18,7 @@ class Comet(SearchEnginesBase):
         args = super(Comet, self).add_args()
         args.append(Argument('COMET_DIR', 'executable location.', default=''))
         args.append(Argument('COMET_EXE', 'executable name.', default='comet'))
+        args.append(Argument('COMET_FRAGMENT_IONS', 'fragment ions (ms/ms resolution)', default='ion_trap'))
 
         return args
 
