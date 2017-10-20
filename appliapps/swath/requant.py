@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import tempfile
 
 from applicake.app import WrappedApp
 from applicake.apputils import validation
@@ -74,7 +75,15 @@ class RequantValues(WrappedApp):
                     trlist.append(i)
             if not localtr:
                 raise RuntimeError("No corresponding tr found for " + mzmlroot)
-            flags += " --method %s --in %s --do_single_run %s" % (info['REQUANT_METHOD']," ".join(trlist),localtr)
+
+            # workaround to fix "OSError: [Errno 7] Argument list too long"
+            # issue for maaany TRAFO_FILES (broke with 1554 files)
+            # Note: same workaround as in featurealign.py
+            trlist_file = os.path.join(tempfile.mkdtemp(), "trafo_files.txt")
+            with open(trlist_file, "w") as fh:
+                fh.write(" ".join(trlist))
+
+            flags += " --method %s --in $(cat %s) --do_single_run %s" % (info['REQUANT_METHOD'],trlist_file,localtr)
 
         command = "gunzip -c %s > %s && " \
                   "requant_aligned_values_with_old_pymzml.sh --peakgroups_infile %s --out %s %s" % (
