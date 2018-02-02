@@ -89,10 +89,11 @@ class Omssa(SearchEnginesBase):
         exe = app_info.get(Keys.EXECUTABLE, 'omssacl')
 
         #grep to prevent log overflow, InteractParser to add RT to pepXML
-        command = "makeblastdb -dbtype prot -in %s && " \
-                  "MzXML2Search -mgf %s | grep -v scan && " \
-                  "%s %s -fm %s -op %s && " \
-                  "InteractParser %s %s -S" % (
+        #note: mod_template paths are quoted in the template file
+        command = 'makeblastdb -dbtype prot -in "%s" && ' \
+                  'MzXML2Search -mgf "%s" | grep -v scan && ' \
+                  '"%s" %s -fm "%s" -op "%s" && ' \
+                  'InteractParser "%s" "%s" -S' % (
                       omssadbase,
                       mzxmllink,
                       exe, mod_template, mgffile, result,

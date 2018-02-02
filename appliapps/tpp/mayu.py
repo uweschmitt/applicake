@@ -31,7 +31,7 @@ class Mayu(WrappedApp):
         remamb = ""
         if info.get('MAYU_REMAMB', "") == "True":
             remamb = "-remamb"
-        command = "%s -A %s -C %s -I %s -E DECOY_ -G 0.1 -H 501 -M %s -J %s -K %s %s" % (
+        command = '"%s" -A "%s" -C "%s" -I %s -E DECOY_ -G 0.1 -H 501 -M "%s" -J %s -K %s %s' % (
             info[Keys.EXECUTABLE], info[Keys.PEPXML], info['DBASE'], info['MISSEDCLEAVAGE'], outbase, minmass, maxmass,
             remamb)
 
