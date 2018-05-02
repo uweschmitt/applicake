@@ -74,13 +74,13 @@ class FeatureAlignment(WrappedApp):
             flags += " --disable_isotopic_grouping "
 
         # workaround to fix "too many arguemnts" isse for may files (broke with 1022 files):
-        p = os.path.join(tempfile.mkdtemp(), "inputs.txt")
-        with open(p, "w") as fh:
+        MPROPHET_TSV_path = os.path.join(tempfile.mkdtemp(), "MPROPHET_TSV.txt")
+        with open(MPROPHET_TSV_path, "w") as fh:
             fh.write(" ".join(info["MPROPHET_TSV"]))
 
         command = "feature_alignment.py --file_format openswath --in $(cat %s) --out %s " \
                   "--out_meta %s --tmpdir %s %s" % (
-                      p, info['ALIGNMENT_TSV'],
+                      MPROPHET_TSV_path, info['ALIGNMENT_TSV'],
                       info['ALIGNMENT_YAML'], tmpdir, flags)
 
         return info, command
