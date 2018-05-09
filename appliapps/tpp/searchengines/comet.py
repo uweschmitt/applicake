@@ -19,6 +19,7 @@ class Comet(SearchEnginesBase):
         args.append(Argument('COMET_DIR', 'executable location.', default=''))
         args.append(Argument('COMET_EXE', 'executable name.', default='comet'))
         args.append(Argument('COMET_FRAGMENT_IONS', 'fragment ions (ms/ms resolution)', default='ion_trap'))
+        args.append(Argument('COMET_SPECTRUM_BATCH_SIZE', 'max. # of spectra to search at a time', default=0))
 
         return args
 
