@@ -41,7 +41,7 @@ class BioPersonalDB(WrappedApp):
             self.rfile = os.path.join(info[Keys.WORKDIR],"getdataset.out")
             command = "getdataset %s -v -r %s -o %s %s" % (openbis_instance_opt, self.rfile, info["DATASET_DIR"], info["DBASE"])
         else:
-            raise RuntimeError("Unkwnown DB_SOURCE " + info["DB_SOURCE"])
+            raise RuntimeError("Unknown DB_SOURCE " + info["DB_SOURCE"])
         return info, command
 
     def validate_run(self, log, info, run_code, out):
@@ -56,16 +56,15 @@ class BioPersonalDB(WrappedApp):
                 #if info['DB_TYPE'].lower in line.lower():
                 if '.fasta' in line.lower() or '.txt' in line.lower():
                     info['DBASE'] = line.split()[1]
-                    log.info("Database found " + info["DBASE"])
+                    log.info("FASTA database file found " + info["DBASE"])
                     found = True
                 if '.traml' in line.lower():
                     info['TRAML'] = line.split()[1]
-                    log.info("TraML found " + info["TRAML"])
+                    log.info("TraML database file found " + info["TRAML"])
                     found = True
             f.close()
             if not found:
-                log.error("No matching database (.fasta or .traml) found in dataset!")
-                return info
+                raise RuntimeError("No FASTA ('*.fasta') or TraML ('*.traml') database file found in the dataset files: %s" % self.rfile)
 
         return info
 
